@@ -27,12 +27,12 @@ pipeline {
         }
 		stage('Etapa 4') {
             steps {
-                bat 'xcopy bank\src\main\resources\bank.exe  bank\target'
+                bat 'xcopy bank/src/main/resources/bank.exe  bank/target'
             }
         }
 		stage('Etapa 5') {
             steps {
-                bat 'xcopy bank\src\main\resources\bank.xml  bank\target'
+                bat 'xcopy bank/src/main/resources/bank.xml  bank/target'
             }
         }
 		stage('Etapa 6') {
