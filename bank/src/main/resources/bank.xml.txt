@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service>
+    <id>bank</id>
+    <name>Service Bank</name>
+    <description>Servicio de bank en windows</description>
+    <executable>java</executable>
+    <arguments>-jar "bank.jar"</arguments>
+    <logmode>rotate</logmode>
+</service>
