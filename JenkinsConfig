@@ -1,0 +1,68 @@
+pipeline {
+	agent any
+    environment {
+		VARIABLE_X='Variable de entorno'
+		PROJECT_NAME='Servicio bank'
+    }
+    stages {
+		stage('Etapa 0') {
+			steps {
+				echo "Proyecto ${PROJECT_NAME}"
+			}
+		}
+		stage('Etapa 1') {
+            steps {
+				bat 'mvn -f bank validate'
+            }
+        }
+        stage('Etapa 2') {
+            steps {
+               bat 'mvn -f bank install'
+            }
+        }
+        stage('Etapa 3') {
+            steps {
+                bat 'mvn -f bank package'
+            }
+        }
+		stage('Etapa 4') {
+            steps {
+                bat 'xcopy bank\src\main\resources\bank.exe  bank\target'
+            }
+        }
+		stage('Etapa 5') {
+            steps {
+                bat 'xcopy bank\src\main\resources\bank.xml  bank\target'
+            }
+        }
+		stage('Etapa 6') {
+            steps {
+                bat 'bank.exe install'
+            }
+        }
+		stage('Etapa 7') {
+            steps {
+                bat 'bank.exe start'
+            }
+        }
+    }
+	post {
+		always {
+            emailext body: 'Se ejecuto el pipeline', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Ejecucion pipeline'
+        }
+        aborted {
+            echo "BUILD ABORTED"
+        }
+        success {
+            echo "BUILD SUCCESS"
+            emailext body: 'Despliegue terminado del aplicativo bank', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Despliegue terminado'
+        }
+        unstable {
+            echo "BUILD UNSTABLE"
+        }
+        failure {
+            echo "BUILD FAILURE"
+			emailext body: 'Fallo despliegue del aplicativo bank', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Fallo despliegue'
+        }
+	}
+}
