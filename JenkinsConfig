@@ -15,32 +15,37 @@ pipeline {
 				bat 'mvn -f bank validate'
             }
         }
-        stage('Etapa 2') {
+		stage('Etapa 2') {
             steps {
-               bat 'mvn -f bank install'
+				bat 'mvn -f bank clean'
             }
         }
         stage('Etapa 3') {
             steps {
-                bat 'mvn -f bank package'
+               bat 'mvn -f bank install'
             }
         }
-		stage('Etapa 4') {
+        stage('Etapa 4') {
             steps {
-                bat 'xcopy bank\\src\\main\\resources\\bank.exe  bank\\target'
+                bat 'mvn -f bank package'
             }
         }
 		stage('Etapa 5') {
             steps {
-                bat 'xcopy bank\\src\\main\\resources\\bank.xml  bank\\target'
+                bat 'xcopy bank\\src\\main\\resources\\bank.exe  bank\\target'
             }
         }
 		stage('Etapa 6') {
             steps {
-                bat 'bank.exe install'
+                bat 'xcopy bank\\src\\main\\resources\\bank.xml  bank\\target'
             }
         }
 		stage('Etapa 7') {
+            steps {
+                bat 'bank.exe install'
+            }
+        }
+		stage('Etapa 8') {
             steps {
                 bat 'bank.exe start'
             }
