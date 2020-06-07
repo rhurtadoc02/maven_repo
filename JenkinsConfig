@@ -42,12 +42,12 @@ pipeline {
         }
 		stage('Etapa 7') {
             steps {
-                bat 'bank.exe install'
+                bat 'bank\\target\\bank.exe install'
             }
         }
 		stage('Etapa 8') {
             steps {
-                bat 'bank.exe start'
+                bat 'bank\\target\\bank.exe start'
             }
         }
     }
